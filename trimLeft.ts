@@ -20,6 +20,8 @@
 /* _____________ Your Code Here _____________ */
 type WhiteSpace = ' ' | '\n' | '\t'
 type TrimLeft<S extends string> = S extends `${WhiteSpace}${infer U}` ? TrimLeft<U> : S
+type TrimRight<S extends string> = S extends `${infer U}${WhiteSpace}` ? TrimRight<U> : S
+type Trim<S extends string> = TrimRight<TrimLeft<S>>
 
 /* _____________ Test Cases _____________ */
 import { Equal, Expect } from './utils'
@@ -30,6 +32,8 @@ type cases = [
   Expect<Equal<TrimLeft<'     str'>, 'str'>>,
   Expect<Equal<TrimLeft<'     str     '>, 'str     '>>,
   Expect<Equal<TrimLeft<'   \n\t foo bar '>, 'foo bar '>>,
+  Expect<Equal<Trim<'   \n\t foo bar '>, 'foo bar'>>,
+  Expect<Equal<Trim<'\n\t foo bar'>, 'foo bar'>>
 ]
 
 
